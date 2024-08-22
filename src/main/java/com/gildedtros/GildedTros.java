@@ -1,73 +1,36 @@
 package com.gildedtros;
 
+import com.gildedtros.item.CurrentItemFactory;
+import com.gildedtros.item.DecoratedItem;
+import com.gildedtros.item.ItemFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 class GildedTros {
+
     Item[] items;
+    private final List<DecoratedItem> decoratedItems = new ArrayList<>();
+
 
     public GildedTros(Item[] items) {
         this.items = items;
+        for (Item item : items) {
+            ItemFactory factory = CurrentItemFactory.getInstance();
+            decoratedItems.add(factory.decorate(item));
+        }
     }
 
     public GildedTros(Item item) {
         this(new Item[] { item });
     }
 
+    public void updateItems() {
+        decoratedItems.forEach(DecoratedItem::update);
+    }
+
     public void updateItems(int times) {
         IntStream.range(0, times).forEach(i -> updateItems());
-    }
-
-    public void updateItems() {
-        for (Item item : items) {
-            updateQuality(item);
-            updateSellIn(item);
-            if (item.sellIn < 0) {
-                handleNegativeSellIn(item);
-            }
-        }
-    }
-
-    private void updateQuality(Item item) {
-        if (item.name.equals("Good Wine") || item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
-            if (item.quality < 50) {
-                item.quality++;
-                if (item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
-                    if (item.sellIn < 11) {
-                        if (item.quality < 50) {
-                            item.quality++;
-                        }
-                    }
-                    if (item.sellIn < 6) {
-                        if (item.quality < 50) {
-                            item.quality++;
-                        }
-                    }
-                }
-            }
-        } else if (!item.name.equals("B-DAWG Keychain")) {
-            if (item.quality > 0) {
-                item.quality--;
-            }
-        }
-    }
-
-    private void updateSellIn(Item item) {
-        if (!item.name.equals("B-DAWG Keychain")) {
-            item.sellIn--;
-        }
-    }
-
-    private void handleNegativeSellIn(Item item) {
-        if (item.name.equals("Good Wine")) {
-            if (item.quality < 50) {
-                item.quality++;
-            }
-        } else if (item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
-            item.quality = 0;
-        } else if (!item.name.equals("B-DAWG Keychain")) {
-            if (item.quality > 0) {
-                item.quality--;
-            }
-        }
     }
 }
