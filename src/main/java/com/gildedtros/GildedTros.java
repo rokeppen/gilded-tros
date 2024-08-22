@@ -30,49 +30,43 @@ class GildedTros {
     private void updateQuality(Item item) {
         if (item.name.equals("Good Wine") || item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
             if (item.quality < 50) {
-                item.quality = item.quality + 1;
+                item.quality++;
                 if (item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
                     if (item.sellIn < 11) {
                         if (item.quality < 50) {
-                            item.quality = item.quality + 1;
+                            item.quality++;
                         }
                     }
                     if (item.sellIn < 6) {
                         if (item.quality < 50) {
-                            item.quality = item.quality + 1;
+                            item.quality++;
                         }
                     }
                 }
             }
-        } else {
+        } else if (!item.name.equals("B-DAWG Keychain")) {
             if (item.quality > 0) {
-                if (!item.name.equals("B-DAWG Keychain")) {
-                    item.quality = item.quality - 1;
-                }
+                item.quality--;
             }
         }
     }
 
     private void updateSellIn(Item item) {
         if (!item.name.equals("B-DAWG Keychain")) {
-            item.sellIn = item.sellIn - 1;
+            item.sellIn--;
         }
     }
 
     private void handleNegativeSellIn(Item item) {
         if (item.name.equals("Good Wine")) {
             if (item.quality < 50) {
-                item.quality = item.quality + 1;
+                item.quality++;
             }
-        } else {
-            if (item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
-                item.quality = 0;
-            } else {
-                if (item.quality > 0) {
-                    if (!item.name.equals("B-DAWG Keychain")) {
-                        item.quality = item.quality - 1;
-                    }
-                }
+        } else if (item.name.equals("Backstage passes for Re:Factor") || item.name.equals("Backstage passes for HAXX")) {
+            item.quality = 0;
+        } else if (!item.name.equals("B-DAWG Keychain")) {
+            if (item.quality > 0) {
+                item.quality--;
             }
         }
     }
