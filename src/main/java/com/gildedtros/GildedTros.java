@@ -1,10 +1,20 @@
 package com.gildedtros;
 
+import java.util.stream.IntStream;
+
 class GildedTros {
     Item[] items;
 
     public GildedTros(Item[] items) {
         this.items = items;
+    }
+
+    public GildedTros(Item item) {
+        this(new Item[] { item });
+    }
+
+    public void updateItems(int times) {
+        IntStream.range(0, times).forEach(i -> updateItems());
     }
 
     public void updateItems() {
