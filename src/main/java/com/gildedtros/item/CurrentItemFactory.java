@@ -7,6 +7,12 @@ import java.util.List;
 
 public class CurrentItemFactory implements ItemFactory {
 
+    public List<String> smellyItems = Arrays.asList(
+            "Duplicate Code",
+            "Long Methods",
+            "Ugly Variable Names"
+    );
+
     private CurrentItemFactory() {}
 
     @Override
@@ -19,6 +25,9 @@ public class CurrentItemFactory implements ItemFactory {
         }
         if (item.name.startsWith("Backstage passes")) {
             return new BackstagePassItem(item);
+        }
+        if (smellyItems.contains(item.name)) {
+            return new SmellyItem(item);
         }
         return new DecoratedItem(item);
     }
